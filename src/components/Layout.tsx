@@ -1,4 +1,4 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid2 as Grid, Typography } from "@mui/material";
 
 const Layout = () => {
 	return (
@@ -12,10 +12,10 @@ const Layout = () => {
 				spacing={2}
 				style={{ height: "100vh" }}
 			>
-				<Grid item>
+				<Grid>
 					<Typography variant={"h2"}>Hello World!</Typography>
 				</Grid>
-				<Grid item>
+				<Grid>
 					<Typography variant={"h4"}>
 						You are in {import.meta.env.MODE} mode. Your journey begins here.
 						Hi!!
