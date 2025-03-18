@@ -18,6 +18,7 @@ const Layout = () => {
 				<Grid item>
 					<Typography variant={"h4"}>
 						You are in {import.meta.env.MODE} mode. Your journey begins here.
+						Hi!!
 					</Typography>
 				</Grid>
 			</Grid>
