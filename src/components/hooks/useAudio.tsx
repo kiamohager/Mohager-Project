@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const useAudio = (audioFile: string) => {
-  const audioElement = useRef<HTMLAudioElement | null>(new Audio(audioFile));
+  const audioElement = useRef<HTMLAudioElement>(new Audio(audioFile));
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const useAudio = (audioFile: string) => {
     };
   }, [isPlaying]);
 
-  return { isPlaying, setIsPlaying };
+  return { isPlaying, setIsPlaying, audioElement: audioElement.current };
 };
 
 export default useAudio;

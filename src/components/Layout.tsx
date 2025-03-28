@@ -14,12 +14,11 @@ import { Suspense, useMemo } from "react";
 
 const Layout = () => {
     const [fadeState, setFadeState] = useState(1);
-    const audioFile = goodNightAudio;
-    const { isPlaying, setIsPlaying } = useAudio(audioFile);
+    // const { isPlaying, setIsPlaying, audioElement } = useAudio(goodNightAudio);
 
-    const handlePlayPause = () => {
-        setIsPlaying((prev) => !prev);
-    };
+    // const handlePlayPause = () => {
+    //     setIsPlaying((prev) => !prev);
+    // };
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -38,9 +37,9 @@ const Layout = () => {
                     <DesktopSocialButtonList />
                 </Grid>
                 <Grid container justifyContent="center" alignItems="center" sx={{ flexGrow: 1 }}>
-                    <Button onClick={handlePlayPause} variant="contained" color="primary">
+                    {/* <Button onClick={handlePlayPause} variant="contained" color="primary">
                         {isPlaying ? "Pause Audio" : "Play Audio"}
-                    </Button>
+                    </Button> */}
                 </Grid>
                 <Grid
                     container
@@ -90,7 +89,5 @@ const Layout = () => {
         </>
     );
 };
-
-// render(<Layout />, document.getElementById("root"));
 
 export default Layout;
