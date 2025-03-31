@@ -1,40 +1,23 @@
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import circleImg from "../assets/styles/circle.png";
-import { Box, Grid2 as Grid } from "@mui/material";
-import { BufferAttribute, TextureLoader } from "three";
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { OrbitControls } from "@react-three/drei";
-import goodNightAudio from "../audio/good-night.mp3";
-type AudioProps = { audioElement: HTMLAudioElement };
+import { BufferAttribute, Color, TextureLoader } from "three";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-function Points(props: AudioProps) {
+type AnalyserProp = { analyser: AnalyserNode | null; paused: boolean};
+
+function Points(props: AnalyserProp) {
     const imgTex = useLoader(TextureLoader, circleImg);
     const bufferRef = useRef<BufferAttribute>(null);
-    const analyser = useRef<AnalyserNode>(null);
-    // const audioSourceRef = useRef<MediaElementAudioSourceNode>(null);
+    const materialRef = useRef<any>(null);
 
-    useEffect(() => {
-        // if (analyser.current) {
-        //     return;
-        // }
-        const audio = new Audio(goodNightAudio);
-        const audioContext = new AudioContext();
-        analyser.current = audioContext.createAnalyser();
-        analyser.current.fftSize = 256;
+    const initialT = 0
+    const initialF = 0.002
+    const initialA = 3;
 
-        const analyserBufferLength = analyser.current.frequencyBinCount;
-        // console.log(dataArray.current);
+    const [t, setT] = useState(initialT);
+    const [f, setF] = useState(initialF);
+    const [a, setA] = useState(initialA);
 
-        const source = audioContext.createMediaElementSource(audio);
-        source.connect(analyser.current);
-        analyser.current.connect(audioContext.destination);
-        setTimeout(()=> audio.play(), 3000);
-        // console.log(anal);
-    }, []);
-
-    const [t, setT] = useState(0);
-    const [f, setF] = useState(0.002);
-    const [a, setA] = useState(3);
 
     const graph = useCallback(
         (x: number, z: number) => {
@@ -58,40 +41,51 @@ function Points(props: AudioProps) {
         }
         return new Float32Array(positions);
     }, [count, sep, graph]);
-    // console.log(dataArray);
+
+    useEffect(() => {
+        if (props.paused) {
+            setT(initialT);
+            setF(initialF);
+            setA(initialA);
+        }
+    }, [props.paused]);
+
 
     useFrame(() => {
-        if (!bufferRef.current || !analyser.current) {
+        if (!bufferRef.current) {
             return;
         }
 
         setT((t) => t + 10);
 
         const positions = bufferRef.current.array;
-        // analyser.current.getByteFrequencyData(dataArray.current);
-
         const newArray = new Uint8Array(128);
-        analyser.current?.getByteFrequencyData(newArray);
-        console.log(newArray);
+        props.analyser?.getByteFrequencyData(newArray);
 
-        //console.log(analyser.current);
-        //console.log(audioSourceRef.current);
-        const amplitude = newArray[32] / 255;
+        const amplitude = newArray.reduce((a, b) => a + b, 0) / 128 / 255;
         const adjustedAmp = amplitude * 10;
-        // console.log(adjustedAmp);
 
         let i = 0;
         for (let xi = 0; xi < count; xi++) {
             for (let zi = 0; zi < count; zi++) {
                 let x = sep * (xi - count / 2);
                 let z = sep * (zi - count / 2);
-
-                positions[i + 1] = graph(x, z) * adjustedAmp;
-                i += 3;
+                
+                if (!props.paused) {
+                    positions[i + 1] = graph(x, z) * (props.analyser ? adjustedAmp : 1);
+                    i += 3;
+                } else {
+                    positions[i + 1] = graph(x, z)
+                    i += 3;
+                }
             }
         }
 
         bufferRef.current.needsUpdate = true;
+        
+        const color = new Color();
+        color.setRGB(amplitude*3, amplitude ? 0 : 0.3, 1 - amplitude*3);
+        materialRef.current.color.copy(color);
     });
 
     return (
@@ -104,6 +98,7 @@ function Points(props: AudioProps) {
                 />
             </bufferGeometry>
             <pointsMaterial
+                ref={materialRef}
                 attach="material"
                 map={imgTex}
                 color={0x00aaff}
@@ -117,15 +112,15 @@ function Points(props: AudioProps) {
     );
 }
 
-function AnimationCanvas(props: AudioProps) {
+function AnimationCanvas(props: AnalyserProp) {
     return (
-        <Canvas camera={{ position: [100, 100, 0]/*position: [100, 80, 0]*/, fov: 45 }}>
+        <Canvas camera={{ position: [100, 100, 0], fov: 45 }}>
             <Points {...props} />
         </Canvas>
     );
 }
 
-function Run(props: AudioProps) {
+function Run(props: AnalyserProp) {
     return <AnimationCanvas {...props} />;
 }
 
