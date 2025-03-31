@@ -1,6 +1,5 @@
 import { Box, Button, Grid2 as Grid, Typography } from "@mui/material";
 import { useRef, useState, useEffect } from "react";
-import Weather from "./Weather";
 import { DesktopSocialButtonList } from "./Socials";
 import useAudio from "./hooks/useAudio";
 import goodNightAudio from "../audio/good-night.mp3";
@@ -67,9 +66,6 @@ const Layout = () => {
                             Kia Mohager
                         </Typography>
                     </Grid> 
-                    <Grid position={"absolute"} left="75%" top="25px">
-                        <Weather />
-                    </Grid>
                     <DesktopSocialButtonList />
                 </Grid>
                 <Grid
