@@ -53,7 +53,7 @@ jobs:
           WEBSITE_NODE_ENV: "production"
 
       - name: Build
-        run: npm run build
+        run: npm run build-lambda
       
       - name: Bootstrap
         run: npm run bootstrap
