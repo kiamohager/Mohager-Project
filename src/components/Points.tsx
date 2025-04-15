@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import circleImg from "../assets/styles/circle.png";
-import { BufferAttribute, Color, TextureLoader } from "three";
+import { BufferAttribute, Color, PointsMaterial, TextureLoader } from "three";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type AnalyserProp = { analyser: AnalyserNode | null; paused: boolean};
@@ -8,7 +8,7 @@ type AnalyserProp = { analyser: AnalyserNode | null; paused: boolean};
 function Points(props: AnalyserProp) {
     const imgTex = useLoader(TextureLoader, circleImg);
     const bufferRef = useRef<BufferAttribute>(null);
-    const materialRef = useRef<any>(null);
+    const materialRef = useRef<PointsMaterial | null>(null);
 
     const initialT = 0
     const initialF = 0.002
@@ -28,14 +28,14 @@ function Points(props: AnalyserProp) {
 
     const count = 100;
     const sep = 3;
-    let positions = useMemo(() => {
-        let positions = [];
+    const positions = useMemo(() => {
+        const positions = [];
 
         for (let xi = 0; xi < count; xi++) {
             for (let zi = 0; zi < count; zi++) {
-                let x = sep * (xi - count / 2);
-                let z = sep * (zi - count / 2);
-                let y = graph(x, z);
+                const x = sep * (xi - count / 2);
+                const z = sep * (zi - count / 2);
+                const y = graph(x, z);
                 positions.push(x, y, z);
             }
         }
@@ -68,8 +68,8 @@ function Points(props: AnalyserProp) {
         let i = 0;
         for (let xi = 0; xi < count; xi++) {
             for (let zi = 0; zi < count; zi++) {
-                let x = sep * (xi - count / 2);
-                let z = sep * (zi - count / 2);
+                const x = sep * (xi - count / 2);
+                const z = sep * (zi - count / 2);
                 
                 if (!props.paused) {
                     positions[i + 1] = graph(x, z) * (props.analyser ? adjustedAmp : 1);
@@ -85,7 +85,7 @@ function Points(props: AnalyserProp) {
         
         const color = new Color();
         color.setRGB(amplitude*3, amplitude ? 0 : 0.3, 1 - amplitude*3);
-        materialRef.current.color.copy(color);
+        materialRef.current?.color.copy(color);
     });
 
     return (

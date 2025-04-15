@@ -1,13 +1,18 @@
 import { Box, Button, Grid2 as Grid, Typography } from "@mui/material";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { DesktopSocialButtonList } from "./Socials";
 import useAudio from "./hooks/useAudio";
 import goodNightAudio from "../audio/good-night.mp3";
 import Run from "./Points";
+import useUpdateToken from "./hooks/useUpdateToken";
+import { WebPlaybackSDK } from "react-spotify-web-playback-sdk";
+import Player from "./Spotify/Player";
 
 const Layout = () => {
-    const [fadeState, setFadeState] = useState(1);
     const { isPlaying, setIsPlaying, audioElement } = useAudio(goodNightAudio);
+    const [analyser, setAnalyser] = useState<AnalyserNode | null>(null);
+    const audioPlayer = useRef<HTMLAudioElement>(null);
+    const [token, _] = useUpdateToken("accessToken", null);
 
     const handlePlayPause = () => {
         setIsPlaying((prev) => !prev);
@@ -21,15 +26,9 @@ const Layout = () => {
         }
     };
 
-    const [analyser, setAnalyser] = useState<AnalyserNode | null>(null);
-    const audioPlayer = useRef<HTMLAudioElement>(null);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setFadeState(0);
-        }, 200);
-        return () => clearTimeout(timer);
-    }, []);
+    const handleSpotifyClick = () => {
+        window.location.href = "/callback";
+    };
 
     function playAudio() {
         audioPlayer.current = audioElement;
@@ -46,34 +45,35 @@ const Layout = () => {
     }
 
     return (
-        <>
+        <WebPlaybackSDK
+            initialDeviceName={"kiamohager device"}
+            getOAuthToken={(cb) => {
+                cb(token as string);
+            }}
+            connectOnInitialized={true}
+            initialVolume={0.15}
+        >
             <Box display={"flex"} flexDirection={"column"} height={"100vh"} zIndex={55}>
-                <Grid
-                    container
-                    position={"absolute"}
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                    top={20}
-                    left="48%"
-                >
-                    <Button onClick={handlePlayPause} variant="text">
-                        {isPlaying ? "Pause" : "Play"}
-                    </Button>
-                </Grid>
                 <Grid container justifyContent={"space-between"}>
-                    <Grid position={"relative"} left="10px" top="20px">
-                        <Typography color="white">
-                            Kia Mohager
-                        </Typography>
-                    </Grid> 
+                    <Typography p={2} color="white">
+                        Kia Mohager
+                    </Typography>
+                    {!token && (
+                        <Button color={"secondary"} onClick={handleSpotifyClick} variant="text">
+                            Login with Spotify
+                        </Button>
+                    )}
+                    <Box p={2}>
+                        <Button onClick={handlePlayPause} variant="text">
+                            {isPlaying ? "Pause" : "Play"}
+                        </Button>
+                    </Box>
                     <DesktopSocialButtonList />
                 </Grid>
-                <Grid
-                    container
-                    justifyContent="center"
-                    alignItems="center"
-                    sx={{ flexGrow: 1 }}
-                ></Grid>
+                <Box flex={1} />
+                <Box p={2}>
+                    <Player token={token} />
+                </Box>
             </Box>
             <Box
                 position={"absolute"}
@@ -103,7 +103,7 @@ const Layout = () => {
             >
                 <Run analyser={analyser} paused={!isPlaying} />
             </Box>
-        </>
+        </WebPlaybackSDK>
     );
 };
 
