@@ -47,8 +47,8 @@ class WebsiteAPIStack extends Stack {
         const lambda = this.createLambda(env, lambdaRole);
 
         const certificate = new Certificate(this, "websiteCertificate", {
-            domainName: "kiawebsite.com",
-            subjectAlternativeNames: ["*.kiawebsite.com"],
+            domainName: "kiamohager.com",
+            subjectAlternativeNames: ["*.kiamohager.com"],
             validation: CertificateValidation.fromDns()
         });
         const restApi = this.createAPI(certificate, lambda);
@@ -73,7 +73,7 @@ class WebsiteAPIStack extends Stack {
             restApiName: "Project Website API",
             description: "The service endpoint for Website's API",
             domainName: {
-                domainName: "api.kiawebsite.com",
+                domainName: "api.kiamohager.com",
                 endpointType: EndpointType.EDGE,
                 certificate
             },
