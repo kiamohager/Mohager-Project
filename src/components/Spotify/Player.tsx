@@ -28,6 +28,9 @@ const Player = (props: tokenProp) => {
 
     useEffect(() => {
         const execute = async () => {
+            if (!props.token) {
+                return;
+            }
             const spotifyApi = new SpotifyWebApi();
             const expireDateTime = DateTime.fromMillis(
                 parseInt(localStorage.getItem("expiration") as string)
@@ -42,7 +45,7 @@ const Player = (props: tokenProp) => {
             const device = deviceResponse.devices.find(
                 (device) => device.name == "kiamohager device"
             );
-            
+
             if (!device || !device.id) {
                 return;
             }
