@@ -26,6 +26,8 @@ const SpotifyRequest = () => {
                 const expiration = currTime.plus({ seconds: jsonData.expires_in });
                 localStorage.setItem("expiration", expiration.toMillis().toString());
             }
+            console.log("Code Params: ", searchParams.get("code"));
+            console.log("Access Token: ", localStorage.getItem("accessToken"));
             navigate("/");
         };
         fetchData();

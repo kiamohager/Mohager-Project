@@ -37,11 +37,12 @@ const Player = (props: tokenProp) => {
                 refreshToken(CLIENT_ID);
             }
             spotifyApi.setAccessToken(props.token);
+            console.log("Spotify Api access token: ", spotifyApi.getAccessToken());
             const deviceResponse = await spotifyApi.getMyDevices();
             const device = deviceResponse.devices.find(
                 (device) => device.name == "kiamohager device"
             );
-            console.log(deviceResponse);
+            
             if (!device || !device.id) {
                 return;
             }
