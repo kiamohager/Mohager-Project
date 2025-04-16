@@ -54,69 +54,60 @@ const Player = (props: tokenProp) => {
 
     return (
         props.token && (
-            <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"}>
-                <Grid container justifyContent={"center"} mt={3}>
-                    <IconButton color="secondary" onClick={() => player?.previousTrack()}>
-                        <SkipPreviousIcon />
-                    </IconButton>
-                    <IconButton
-                        color="secondary"
-                        onClick={() => {
-                            player?.togglePlay();
-                        }}
-                    >
-                        {!state?.paused ? <PauseIcon /> : <PlayArrowIcon />}
-                    </IconButton>
-                    <IconButton color="secondary" onClick={() => player?.nextTrack()}>
-                        <SkipNextIcon />
-                    </IconButton>
-                    <Box ml={1} width={100} mt={1}>
-                        <Slider
-                            value={volume}
-                            color="secondary"
-                            min={0}
-                            max={100}
-                            onChange={volumeSlider}
-                        />
-                    </Box>
-                </Grid>
-                <Box display="flex" flexDirection={"row"} alignItems={"flex-end"}>
-                    <motion.div
-                        animate={{ rotate: [0, 360] }}
-                        transition={{
-                            duration: 6,
-                            repeat: Infinity,
-                            repeatType: "loop",
-                            ease: "linear"
-                        }}
-                        style={{
-                            borderRadius: "50%",
-                            overflow: "hidden",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center"
-                        }}
-                    >
-                        <img
-                            src={state?.track_window.current_track.album.images[1].url}
-                            style={{
-                                width: "100%",
-                                height: "100%",
-                                objectFit: "cover",
-                                borderRadius: "50%"
-                            }}
-                        />
-                    </motion.div>
+            <Box
+                display={"flex"}
+                flexDirection={"row"}
+                justifyContent={"space-between"}
+                overflow={"hidden"}
+                alignItems={"flex-end"}
+            >
+                <Box display={"flex"} flexDirection={"column"}>
                     <Typography
                         color={"secondary"}
                         variant={"h5"}
                         fontSize={17}
-                        fontFamily={"Pacifico"}
+                        fontFamily={"Special Gothic Expanded One"}
+                        paddingLeft={1}
                     >
-                        {" "}
                         {state?.track_window.current_track.name}
                     </Typography>
+                    <Box display={"flex"}>
+                        <IconButton color="secondary" onClick={() => player?.previousTrack()}>
+                            <SkipPreviousIcon />
+                        </IconButton>
+                        <IconButton
+                            color="secondary"
+                            onClick={() => {
+                                player?.togglePlay();
+                            }}
+                        >
+                            {!state?.paused ? <PauseIcon /> : <PlayArrowIcon />}
+                        </IconButton>
+                        <IconButton color="secondary" onClick={() => player?.nextTrack()}>
+                            <SkipNextIcon />
+                        </IconButton>
+                        <Box ml={1} width={100} mt={1}>
+                            <Slider
+                                value={volume}
+                                color="secondary"
+                                min={0}
+                                max={100}
+                                onChange={volumeSlider}
+                            />
+                        </Box>
+                    </Box>
                 </Box>
+                <motion.img
+                    animate={{ rotate: [0, 360] }}
+                    transition={{
+                        duration: 10,
+                        repeat: Infinity,
+                        repeatType: "loop",
+                        ease: "linear"
+                    }}
+                    style={{ width: 100, objectFit: "cover", borderRadius: "50%" }}
+                    src={state?.track_window.current_track.album.images[2].url}
+                />
             </Box>
         )
     );

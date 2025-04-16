@@ -6,11 +6,11 @@ import {
     DynamoDBDocumentClient
 } from "@aws-sdk/lib-dynamodb";
 import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
+import { USERS_TABLE } from "../../infrastructure/apiStack";
 
 const client = new DynamoDBClient({});
 const ddb = DynamoDBDocumentClient.from(client);
 
-const TABLE_NAME = "Users";
 const TTL_IN_SECONDS = 60 * 60 * 24 * 30;
 
 export const handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
@@ -25,7 +25,7 @@ export const handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyRe
 
     const user = await ddb.send(
         new GetCommand({
-            TableName: TABLE_NAME,
+            TableName: USERS_TABLE,
             Key: { id }
         })
     );
@@ -33,7 +33,7 @@ export const handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyRe
     if (!user.Item) {
         await ddb.send(
             new PutCommand({
-                TableName: TABLE_NAME,
+                TableName: USERS_TABLE,
                 Item: {
                     id,
                     times: 1,
@@ -49,7 +49,7 @@ export const handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyRe
     } else {
         await ddb.send(
             new UpdateCommand({
-                TableName: TABLE_NAME,
+                TableName: USERS_TABLE,
                 Key: { id },
                 UpdateExpression: "SET times = times + :inc",
                 ExpressionAttributeValues: {

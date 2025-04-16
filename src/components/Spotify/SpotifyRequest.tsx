@@ -11,6 +11,10 @@ const SpotifyRequest = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            if (searchParams.get("error")) {
+                console.log("Im here");
+                return navigate("/");
+            }
             const codeParams = searchParams.get("code");
             if (!codeParams) {
                 await redirectToAuthCodeFlow(CLIENT_ID);

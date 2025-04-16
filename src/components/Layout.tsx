@@ -5,7 +5,7 @@ import useAudio from "./hooks/useAudio";
 import goodNightAudio from "../audio/good-night.mp3";
 import Run from "./Points";
 import useUpdateToken from "./hooks/useUpdateToken";
-import { WebPlaybackSDK } from "react-spotify-web-playback-sdk";
+import { useSpotifyPlayer, WebPlaybackSDK } from "react-spotify-web-playback-sdk";
 import Player from "./Spotify/Player";
 
 const Layout = () => {
@@ -71,7 +71,7 @@ const Layout = () => {
                     <DesktopSocialButtonList />
                 </Grid>
                 <Box flex={1} />
-                <Box p={2}>
+                <Box m={2}>
                     <Player token={token} />
                 </Box>
             </Box>
