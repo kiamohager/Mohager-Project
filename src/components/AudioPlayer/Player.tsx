@@ -1,0 +1,172 @@
+// components/Player.tsx
+import { Box, Icon, IconButton, Slider, Typography } from "@mui/material";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import SkipNextIcon from "@mui/icons-material/SkipNext";
+import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
+import PauseIcon from "@mui/icons-material/Pause";
+import VolumeOffIcon from "@mui/icons-material/VolumeOff";
+import VolumeDownIcon from "@mui/icons-material/VolumeDown";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Duration } from "luxon";
+
+type audioProp = {
+    isPlaying: boolean;
+    audio: HTMLAudioElement | null;
+    playAudio: () => void;
+    pauseAudio: () => void;
+    skipNext: () => void;
+    skipPrevious: () => void;
+    trackTitle: string;
+    albumImg: string | null;
+};
+
+const Player = (props: audioProp) => {
+    const [volume, setVolume] = useState<number>(50);
+    const [currentTime, setCurrentTime] = useState<number>(0);
+    const [duration, setDuration] = useState<number>(0);
+
+    useEffect(() => {
+        const audio = props.audio;
+        if (!audio) {
+            return;
+        }
+
+        const onLoadedMetadata = () => setDuration(audio.duration);
+        const onTimeUpdate = () => setCurrentTime(audio.currentTime);
+
+        audio.addEventListener("loadedmetadata", onLoadedMetadata);
+        audio.addEventListener("timeupdate", onTimeUpdate);
+
+        return () => {
+            audio.removeEventListener("loadedmetadata", onLoadedMetadata);
+            audio.removeEventListener("timeupdate", onTimeUpdate);
+        };
+    }, [props.audio]);
+
+    useEffect(() => {
+        if (props.audio) {
+            props.audio.volume = volume / 100;
+        }
+    }, [props.audio, volume]);
+
+    return (
+        <Box
+            display={"flex"}
+            flexDirection={"row"}
+            justifyContent={"space-between"}
+            overflow={"hidden"}
+            alignItems={"flex-end"}
+        >
+            <Box display={"flex"} flexDirection={"column"} width={300}>
+                <Typography
+                    color={"secondary"}
+                    variant={"h5"}
+                    fontSize={17}
+                    fontFamily={"Special Gothic Expanded One"}
+                    paddingLeft={1}
+                >
+                    {props.trackTitle}
+                </Typography>
+                <Box display={"flex"} alignItems={"center"}>
+                    <IconButton color="secondary" onClick={props.skipPrevious}>
+                        <SkipPreviousIcon />
+                    </IconButton>
+                    <IconButton
+                        color="secondary"
+                        onClick={props.isPlaying ? props.pauseAudio : props.playAudio}
+                    >
+                        {props.isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
+                    </IconButton>
+                    <IconButton color="secondary" onClick={props.skipNext}>
+                        <SkipNextIcon />
+                    </IconButton>
+                </Box>
+            </Box>
+            <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
+                <Typography
+                    color="secondary"
+                    fontFamily={"Special Gothic Expanded One"}
+                    fontSize={13}
+                >
+                    {Duration.fromObject({ seconds: currentTime }).toFormat("m:ss")}
+                </Typography>
+                <Slider
+                    value={currentTime}
+                    color="secondary"
+                    min={0}
+                    max={duration}
+                    size={"small"}
+                    onChange={(_e, value) => {
+                        setCurrentTime(value as number);
+                        if (props.audio) {
+                            props.audio.currentTime = value as number;
+                        }
+                    }}
+                    sx={{ width: 500, ml: 1, mr: 1 }}
+                />
+                <Typography
+                    color="secondary"
+                    fontFamily={"Special Gothic Expanded One"}
+                    fontSize={13}
+                >
+                    {Duration.fromObject({ seconds: duration }).toFormat("m:ss")}
+                </Typography>
+            </Box>
+            <Box display={"flex"} width={300} justifyContent={"flex-end"}>
+                <motion.img
+                    animate={{ rotate: [0, 360] }}
+                    transition={{
+                        duration: 10,
+                        repeat: Infinity,
+                        repeatType: "loop",
+                        ease: "linear"
+                    }}
+                    style={{
+                        width: 100,
+                        height: 100,
+                        objectFit: "cover",
+                        borderRadius: "50%",
+                        border: props.albumImg ? "1px solid white" : "none",
+                        marginTop: "120px"
+                    }}
+                    src={props.albumImg ?? undefined}
+                />
+                <Box display={"flex"} alignItems={"center"} flexDirection={"column"} marginTop={14}>
+                    <Icon color="secondary">
+                        {volume === 0 ? (
+                            <VolumeOffIcon />
+                        ) : volume <= 50 ? (
+                            <VolumeDownIcon />
+                        ) : (
+                            <VolumeUpIcon />
+                        )}
+                    </Icon>
+                    <Box
+                        height={90}
+                        display={"flex"}
+                        alignItems={"center"}
+                        flexDirection={"column"}
+                        paddingTop={1}
+                        paddingBottom={1}
+                    >
+                        <Slider
+                            value={volume}
+                            color="secondary"
+                            min={0}
+                            max={100}
+                            step={1}
+                            size={"small"}
+                            valueLabelDisplay="auto"
+                            orientation="vertical"
+                            onChange={(_e, value) => setVolume(value as number)}
+                        />
+                    </Box>
+                </Box>
+            </Box>
+        </Box>
+    );
+};
+
+export default Player;
