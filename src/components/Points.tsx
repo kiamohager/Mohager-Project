@@ -13,7 +13,7 @@ function Points(props: AnalyserProp) {
 
     const initialT = 0;
     const initialF = 0.002;
-    const initialA = 3;
+    const initialA = 1.5;
 
     const [t, setT] = useState(initialT);
     const [f, setF] = useState(initialF);
@@ -42,14 +42,6 @@ function Points(props: AnalyserProp) {
         return new Float32Array(positions);
     }, [count, sep, graph]);
 
-    useEffect(() => {
-        if (props.paused) {
-            setT(initialT);
-            setF(initialF);
-            setA(initialA);
-        }
-    }, [props.paused]);
-
     useFrame(() => {
         if (!bufferRef.current) {
             return;
@@ -63,20 +55,21 @@ function Points(props: AnalyserProp) {
 
         const amplitude = newArray.reduce((a, b) => a + b, 0) / newArray.length / 255;
         const adjustedAmp = amplitude * 10;
+        const interpolationSpeed = 0.05;
+
+        if (props.paused) {
+            setA((prev) => prev + (1.5 - prev) * interpolationSpeed);
+        } else {
+            setA(adjustedAmp);
+        }
 
         let i = 0;
         for (let xi = 0; xi < count; xi++) {
             for (let zi = 0; zi < count; zi++) {
                 const x = sep * (xi - count / 2);
                 const z = sep * (zi - count / 2);
-
-                if (!props.paused) {
-                    positions[i + 1] = graph(x, z) * (props.analyser ? adjustedAmp : 1);
-                    i += 3;
-                } else {
-                    positions[i + 1] = graph(x, z);
-                    i += 3;
-                }
+                positions[i + 1] = graph(x, z) * a;
+                i += 3;
             }
         }
 
