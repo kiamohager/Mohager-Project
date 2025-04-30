@@ -47,7 +47,7 @@ const Player = (props: audioProp) => {
 
     useEffect(() => {
         if (props.audio) {
-            props.audio.volume = volume / 100;
+            props.audio.volume = volume / 100 / 5;
         }
     }, [props.audio, volume]);
 
