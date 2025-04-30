@@ -8,7 +8,7 @@ export type Song = {
     index: number;
     title: string;
     albumImg: string | null;
-    audioFile: string | null;
+    audioFile: string;
 };
 
 type SongMap = {

@@ -55,7 +55,7 @@ function Points(props: AnalyserProp) {
 
         const amplitude = newArray.reduce((a, b) => a + b, 0) / newArray.length / 255;
         const adjustedAmp = amplitude * 10;
-        const interpolationSpeed = 0.05;
+        const interpolationSpeed = 0.01;
 
         if (props.paused) {
             setA((prev) => prev + (1.5 - prev) * interpolationSpeed);

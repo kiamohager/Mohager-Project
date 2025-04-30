@@ -12,12 +12,20 @@ const useAudioPlayer = () => {
 
     const currentSong = songs[playlist[currentIndex]];
 
-    useEffect(() => {
+    const handleAudio = async (currentIndex: number) => {
         if (audioElement.current) {
-            audioElement.current.pause();
+            audioElement.current.src = songs[playlist[currentIndex]].audioFile;
+            audioElement.current.load();
+
+            setTimeout(() => {
+                audioElement.current!.play();
+                setIsPlaying(true);
+            }, 50);
+
+            return;
         }
 
-        audioElement.current = new Audio(currentSong.audioFile || "");
+        audioElement.current = new Audio(songs[playlist[currentIndex]].audioFile);
         audioElement.current.volume = 0.2;
 
         const audioContext = new AudioContext();
@@ -28,41 +36,19 @@ const useAudioPlayer = () => {
         newAnalyser.connect(audioContext.destination);
         setAnalyser(newAnalyser);
 
-        const handleEnded = () => {
-            skipNext();
-            setTimeout(() => {
-                playAudio();
-            }, 10);
-        };
+        audioElement.current.addEventListener("ended", skipNext);
 
-        audioElement.current.addEventListener("ended", handleEnded);
+        audioElement.current.load();
+        await audioElement.current.play();
+        setIsPlaying(true);
+    };
 
-        audioElement.current
-            .play()
-            .then(() => {
-                setIsPlaying(true);
-            })
-            .catch((err) => {
-                console.error("Playback failed:", err);
-            });
-
-        return () => {
-            if (audioElement.current) {
-                audioElement.current.pause();
-                audioElement.current.removeEventListener("ended", handleEnded);
-                audioElement.current = null;
-            }
-        };
-    }, [currentIndex, currentSong]);
-
-    const playAudio = () => {
-        if (audioElement.current) {
-            try {
-                audioElement.current.play();
-                setIsPlaying(true);
-            } catch (err) {
-                console.error("Playback failed:", err);
-            }
+    const playAudio = async () => {
+        if (!audioElement.current) {
+            handleAudio(0);
+        } else {
+            await audioElement.current.play();
+            setIsPlaying(true);
         }
     };
 
@@ -73,14 +59,21 @@ const useAudioPlayer = () => {
         setIsPlaying(false);
     };
 
-    const skipNext = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % playlist.length);
-        playAudio();
+    const skipNext = async () => {
+        console.log(audioElement.current);
+        setCurrentIndex((prevIndex) => {
+            const nextIndex = (prevIndex + 1) % playlist.length;
+            handleAudio(nextIndex);
+            return nextIndex;
+        });
     };
 
-    const skipPrevious = () => {
-        setCurrentIndex((prevIndex) => (prevIndex === 0 ? playlist.length - 1 : prevIndex - 1));
-        playAudio();
+    const skipPrevious = async () => {
+        setCurrentIndex((prevIndex) => {
+            const lastIndex = prevIndex === 0 ? playlist.length - 1 : prevIndex - 1;
+            handleAudio(lastIndex);
+            return lastIndex;
+        });
     };
 
     return {
