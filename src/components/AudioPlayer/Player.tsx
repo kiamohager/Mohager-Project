@@ -23,7 +23,7 @@ type audioProp = {
 };
 
 const Player = (props: audioProp) => {
-    const [volume, setVolume] = useState<number>(50);
+    const [volume, setVolume] = useState<number>(5);
     const [currentTime, setCurrentTime] = useState<number>(0);
     const [duration, setDuration] = useState<number>(0);
 
@@ -89,6 +89,7 @@ const Player = (props: audioProp) => {
                     color="secondary"
                     fontFamily={"Special Gothic Expanded One"}
                     fontSize={13}
+                    width={50}
                 >
                     {Duration.fromObject({ seconds: currentTime }).toFormat("m:ss")}
                 </Typography>
@@ -110,6 +111,7 @@ const Player = (props: audioProp) => {
                     color="secondary"
                     fontFamily={"Special Gothic Expanded One"}
                     fontSize={13}
+                    width={50}
                 >
                     {Duration.fromObject({ seconds: duration }).toFormat("m:ss")}
                 </Typography>

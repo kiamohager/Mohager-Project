@@ -6,6 +6,7 @@ export const FFT_SIZE = 256;
 
 const useAudioPlayer = () => {
     const audioElement = useRef<HTMLAudioElement | null>(null);
+    const hasMounted = useRef(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [analyser, setAnalyser] = useState<AnalyserNode | null>(null);
@@ -17,16 +18,13 @@ const useAudioPlayer = () => {
             audioElement.current.src = songs[playlist[currentIndex]].audioFile;
             audioElement.current.load();
 
-            setTimeout(() => {
-                audioElement.current!.play();
-                setIsPlaying(true);
-            }, 50);
+            await audioElement.current!.play();
+            setIsPlaying(true);
 
             return;
         }
 
         audioElement.current = new Audio(songs[playlist[currentIndex]].audioFile);
-        audioElement.current.volume = 0.2;
 
         const audioContext = new AudioContext();
         const newAnalyser = audioContext.createAnalyser();
@@ -59,22 +57,21 @@ const useAudioPlayer = () => {
         setIsPlaying(false);
     };
 
-    const skipNext = async () => {
-        console.log(audioElement.current);
-        setCurrentIndex((prevIndex) => {
-            const nextIndex = (prevIndex + 1) % playlist.length;
-            handleAudio(nextIndex);
-            return nextIndex;
-        });
+    const skipNext = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % playlist.length);
     };
 
-    const skipPrevious = async () => {
-        setCurrentIndex((prevIndex) => {
-            const lastIndex = prevIndex === 0 ? playlist.length - 1 : prevIndex - 1;
-            handleAudio(lastIndex);
-            return lastIndex;
-        });
+    const skipPrevious = () => {
+        setCurrentIndex((prevIndex) => (prevIndex === 0 ? playlist.length - 1 : prevIndex - 1));
     };
+
+    useEffect(() => {
+        if (hasMounted.current) {
+            handleAudio(currentIndex);
+        } else {
+            hasMounted.current = true;
+        }
+    }, [currentIndex]);
 
     return {
         isPlaying,
