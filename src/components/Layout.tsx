@@ -26,7 +26,7 @@ const Layout = () => {
         <>
             <Box display={"flex"} flexDirection={"column"} height={"100vh"} zIndex={55}>
                 <Grid container justifyContent={"space-between"}>
-                    <Typography p={2} color="white">
+                    <Typography p={2} fontFamily={"Special Gothic Expanded One"} color="secondary">
                         Kia Mohager
                     </Typography>
                     <DesktopSocialButtonList />
@@ -42,6 +42,7 @@ const Layout = () => {
                         skipPrevious={skipPrevious}
                         trackTitle={currentSong.title || "Unknown Track"}
                         albumImg={currentSong.albumImg}
+                        artist={currentSong.artist}
                     />
                 </Box>
             </Box>

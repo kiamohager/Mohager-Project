@@ -20,6 +20,7 @@ type audioProp = {
     skipPrevious: () => void;
     trackTitle: string;
     albumImg: string | null;
+    artist: string;
 };
 
 const Player = (props: audioProp) => {
@@ -69,6 +70,15 @@ const Player = (props: audioProp) => {
                 >
                     {props.trackTitle}
                 </Typography>
+                <Typography
+                    color="secondary"
+                    variant={"h5"}
+                    fontSize={10}
+                    fontFamily={"Special Gothic Expanded One"}
+                    paddingLeft={1}
+                >
+                    {props.artist}
+                </Typography>
                 <Box display={"flex"} alignItems={"center"}>
                     <IconButton color="secondary" onClick={props.skipPrevious}>
                         <SkipPreviousIcon />
@@ -85,14 +95,15 @@ const Player = (props: audioProp) => {
                 </Box>
             </Box>
             <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
-                <Typography
-                    color="secondary"
-                    fontFamily={"Special Gothic Expanded One"}
-                    fontSize={13}
-                    width={50}
-                >
-                    {Duration.fromObject({ seconds: currentTime }).toFormat("m:ss")}
-                </Typography>
+                <Box display={"flex"} width={40}>
+                    <Typography
+                        color="secondary"
+                        fontFamily={"Special Gothic Expanded One"}
+                        fontSize={13}
+                    >
+                        {Duration.fromObject({ seconds: currentTime }).toFormat("m:ss")}
+                    </Typography>
+                </Box>
                 <Slider
                     value={currentTime}
                     color="secondary"
@@ -107,14 +118,15 @@ const Player = (props: audioProp) => {
                     }}
                     sx={{ width: 500, ml: 1, mr: 1 }}
                 />
-                <Typography
-                    color="secondary"
-                    fontFamily={"Special Gothic Expanded One"}
-                    fontSize={13}
-                    width={50}
-                >
-                    {Duration.fromObject({ seconds: duration }).toFormat("m:ss")}
-                </Typography>
+                <Box display={"flex"} justifyContent={"flex-end"} width={40}>
+                    <Typography
+                        color="secondary"
+                        fontFamily={"Special Gothic Expanded One"}
+                        fontSize={13}
+                    >
+                        {Duration.fromObject({ seconds: duration }).toFormat("m:ss")}
+                    </Typography>
+                </Box>
             </Box>
             <Box display={"flex"} width={300} justifyContent={"flex-end"}>
                 <motion.img

@@ -73,7 +73,7 @@ const CustomIconButton = (props: any) => {
                 <Icon />
                 {!props.social && (
                     <Box pl={2}>
-                        <Typography>{props.text}</Typography>
+                        <Typography color="secondary" fontFamily={"Special Gothic Expanded One"}>{props.text}</Typography>
                     </Box>
                 )}
             </Box>
