@@ -4,6 +4,7 @@ import Run from "./Points";
 import useUpdateToken from "./hooks/useUpdateToken";
 import Player from "./AudioPlayer/Player";
 import useAudioPlayer from "./hooks/useAudioPlayer";
+import { motion } from "framer-motion";
 
 const Layout = () => {
     const {
@@ -32,19 +33,21 @@ const Layout = () => {
                     <DesktopSocialButtonList />
                 </Grid>
                 <Box flex={1} />
-                <Box m={2}>
-                    <Player
-                        isPlaying={isPlaying}
-                        audio={audioElement}
-                        playAudio={playAudio}
-                        pauseAudio={pauseAudio}
-                        skipNext={skipNext}
-                        skipPrevious={skipPrevious}
-                        trackTitle={currentSong.title || "Unknown Track"}
-                        albumImg={currentSong.albumImg}
-                        artist={currentSong.artist}
-                    />
-                </Box>
+                {/* <motion.li initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}> */}
+                    <Box m={2}>
+                        <Player
+                            isPlaying={isPlaying}
+                            audio={audioElement}
+                            playAudio={playAudio}
+                            pauseAudio={pauseAudio}
+                            skipNext={skipNext}
+                            skipPrevious={skipPrevious}
+                            trackTitle={currentSong.title || "Unknown Track"}
+                            albumImg={currentSong.albumImg}
+                            artist={currentSong.artist}
+                        />
+                    </Box>
+                {/* </motion.li> */}
             </Box>
             <Box
                 position={"absolute"}
