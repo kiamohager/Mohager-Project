@@ -310,7 +310,15 @@ const Player = (props: audioProp) => {
                                     props.audio.currentTime = value as number;
                                 }
                             }}
-                            sx={{ width: props.isMediumScreen ? 200 : 500, ml: 1, mr: 1 }}
+                            sx={{
+                                width: props.isMediumScreen ? 200 : 500,
+                                ml: 1,
+                                mr: 1,
+                                "& .MuiSlider-thumb": {
+                                    width: 8,
+                                    height: 8
+                                }
+                            }}
                         />
                         <Box display={"flex"} justifyContent={"flex-end"} width={40}>
                             <Typography
@@ -384,6 +392,12 @@ const Player = (props: audioProp) => {
                                     valueLabelDisplay="auto"
                                     orientation="vertical"
                                     onChange={(_e, value) => setVolume(value as number)}
+                                    sx={{
+                                        "& .MuiSlider-thumb": {
+                                            width: 8,
+                                            height: 8
+                                        }
+                                    }}
                                 />
                             </Box>
                         </Box>
