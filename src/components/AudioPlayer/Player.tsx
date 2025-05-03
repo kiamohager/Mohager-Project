@@ -218,8 +218,6 @@ const Player = (props: audioProp) => {
                                     onChange={(_e, value) => setVolume(value as number)}
                                     onChangeCommitted={(_e, value) => setVolume(value as number)}
                                     sx={{
-                                        touchAction: "auto",
-                                        height: 90,
                                         "& .MuiSlider-thumb": {
                                             width: 8,
                                             height: 8
