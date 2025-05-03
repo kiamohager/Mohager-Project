@@ -21,15 +21,14 @@ const App = () => {
         [darkMode]
     );
 
-    // const deviceTheme = useTheme();
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-    // console.log(isSmallScreen);
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+    const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
-                <Layout isSmallScreen={isSmallScreen} />
+                <Layout isSmallScreen={isSmallScreen} isMediumScreen={isMediumScreen} />
             </ThemeProvider>
         </StyledEngineProvider>
     );

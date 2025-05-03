@@ -4,7 +4,7 @@ import { BufferAttribute, Color, PointsMaterial, TextureLoader } from "three";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FFT_SIZE } from "./hooks/useAudioPlayer";
 
-type AnalyserProp = { analyser: AnalyserNode | null; paused: boolean };
+type AnalyserProp = { analyser: AnalyserNode | null; paused: boolean; isSmallScreen: boolean };
 
 function Points(props: AnalyserProp) {
     const imgTex = useLoader(TextureLoader, circleImg);
@@ -74,10 +74,6 @@ function Points(props: AnalyserProp) {
         }
 
         bufferRef.current.needsUpdate = true;
-
-        // const color = new Color();
-        // color.setRGB(amplitude*3, amplitude ? 0 : 0.3, 1 - amplitude*3);
-        // materialRef.current?.color.copy(color);
     });
 
     return (
@@ -106,7 +102,12 @@ function Points(props: AnalyserProp) {
 
 function AnimationCanvas(props: AnalyserProp) {
     return (
-        <Canvas camera={{ position: [100, 100, 0], fov: 45 }}>
+        <Canvas
+            camera={{
+                position: props.isSmallScreen ? [100, 100, 0] : [100, 100, 0],
+                fov: props.isSmallScreen ? 75 : 45
+            }}
+        >
             <Points {...props} />
         </Canvas>
     );

@@ -5,7 +5,7 @@ import Player from "./AudioPlayer/Player";
 import useAudioPlayer from "./hooks/useAudioPlayer";
 import { useEffect } from "react";
 
-type screenProps = { isSmallScreen: boolean };
+type screenProps = { isSmallScreen: boolean; isMediumScreen: boolean };
 const Layout = (props: screenProps) => {
     const {
         isPlaying,
@@ -18,16 +18,6 @@ const Layout = (props: screenProps) => {
         setIsPlaying,
         currentSong
     } = useAudioPlayer();
-
-    // const handleSpotifyClick = () => {
-    //     window.location.href = "/callback";
-    // };
-    // const deviceTheme = theme();
-    // const isSmallScreen = useMediaQuery(deviceTheme.breakpoints.down("md"));
-
-    useEffect(() => {
-        console.log(props.isSmallScreen);
-    }, [props.isSmallScreen])
 
     return (
         <>
@@ -42,6 +32,7 @@ const Layout = (props: screenProps) => {
                 <Box m={2}>
                     <Player
                         isSmallScreen={props.isSmallScreen}
+                        isMediumScreen={props.isMediumScreen}
                         isPlaying={isPlaying}
                         audio={audioElement}
                         playAudio={playAudio}
@@ -80,7 +71,7 @@ const Layout = (props: screenProps) => {
                 left={0}
                 zIndex={-50}
             >
-                <Run analyser={analyser} paused={!isPlaying} />
+                <Run analyser={analyser} paused={!isPlaying} isSmallScreen={props.isSmallScreen} />
             </Box>
         </>
     );
