@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
+import { createTheme, ThemeProvider, StyledEngineProvider, useTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
 import Layout from "./Layout";
@@ -21,11 +21,15 @@ const App = () => {
         [darkMode]
     );
 
+    // const deviceTheme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+    // console.log(isSmallScreen);
+
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
-                <Layout />
+                <Layout isSmallScreen={isSmallScreen} />
             </ThemeProvider>
         </StyledEngineProvider>
     );

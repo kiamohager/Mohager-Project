@@ -1,12 +1,12 @@
-import { Box, Grid2 as Grid, Typography } from "@mui/material";
+import { Box, Grid2 as Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { DesktopSocialButtonList } from "./Socials";
 import Run from "./Points";
-import useUpdateToken from "./hooks/useUpdateToken";
 import Player from "./AudioPlayer/Player";
 import useAudioPlayer from "./hooks/useAudioPlayer";
-import { motion } from "framer-motion";
+import { useEffect } from "react";
 
-const Layout = () => {
+type screenProps = { isSmallScreen: boolean };
+const Layout = (props: screenProps) => {
     const {
         isPlaying,
         playAudio,
@@ -22,6 +22,12 @@ const Layout = () => {
     // const handleSpotifyClick = () => {
     //     window.location.href = "/callback";
     // };
+    // const deviceTheme = theme();
+    // const isSmallScreen = useMediaQuery(deviceTheme.breakpoints.down("md"));
+
+    useEffect(() => {
+        console.log(props.isSmallScreen);
+    }, [props.isSmallScreen])
 
     return (
         <>
@@ -33,21 +39,20 @@ const Layout = () => {
                     <DesktopSocialButtonList />
                 </Grid>
                 <Box flex={1} />
-                {/* <motion.li initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}> */}
-                    <Box m={2}>
-                        <Player
-                            isPlaying={isPlaying}
-                            audio={audioElement}
-                            playAudio={playAudio}
-                            pauseAudio={pauseAudio}
-                            skipNext={skipNext}
-                            skipPrevious={skipPrevious}
-                            trackTitle={currentSong.title || "Unknown Track"}
-                            albumImg={currentSong.albumImg}
-                            artist={currentSong.artist}
-                        />
-                    </Box>
-                {/* </motion.li> */}
+                <Box m={2}>
+                    <Player
+                        isSmallScreen={props.isSmallScreen}
+                        isPlaying={isPlaying}
+                        audio={audioElement}
+                        playAudio={playAudio}
+                        pauseAudio={pauseAudio}
+                        skipNext={skipNext}
+                        skipPrevious={skipPrevious}
+                        trackTitle={currentSong.title || "Unknown Track"}
+                        albumImg={currentSong.albumImg}
+                        artist={currentSong.artist}
+                    />
+                </Box>
             </Box>
             <Box
                 position={"absolute"}

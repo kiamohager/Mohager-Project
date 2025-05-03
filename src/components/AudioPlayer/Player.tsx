@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import { Duration } from "luxon";
 
 type audioProp = {
+    isSmallScreen: boolean;
     isPlaying: boolean;
     audio: HTMLAudioElement | null;
     playAudio: () => void;
@@ -65,7 +66,7 @@ const Player = (props: audioProp) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1, duration: 0.8, ease: "easeOut" }}
             >
-                <Box display={"flex"} flexDirection={"column"} width={300}>
+                <Box display={"flex"} flexDirection={"column"} width={props.isSmallScreen ? 100 : 300}>
                     <Typography
                         color={"secondary"}
                         variant={"h5"}
@@ -127,7 +128,7 @@ const Player = (props: audioProp) => {
                                 props.audio.currentTime = value as number;
                             }
                         }}
-                        sx={{ width: 500, ml: 1, mr: 1 }}
+                        sx={{ width: props.isSmallScreen ? 200 : 500, ml: 1, mr: 1 }}
                     />
                     <Box display={"flex"} justifyContent={"flex-end"} width={40}>
                         <Typography
@@ -145,7 +146,7 @@ const Player = (props: audioProp) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.2, duration: 1 }}
             >
-                <Box display={"flex"} width={300} justifyContent={"flex-end"}>
+                <Box display={"flex"} width={props.isSmallScreen ? 100 : 300} justifyContent={"flex-end"}>
                     <motion.img
                         animate={{ rotate: [0, 360] }}
                         transition={{
