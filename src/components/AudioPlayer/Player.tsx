@@ -217,12 +217,6 @@ const Player = (props: audioProp) => {
                                     orientation="vertical"
                                     onChange={(_e, value) => setVolume(value as number)}
                                     onChangeCommitted={(_e, value) => setVolume(value as number)}
-                                    sx={{
-                                        "& .MuiSlider-thumb": {
-                                            width: 8,
-                                            height: 8
-                                        }
-                                    }}
                                 />
                             </Box>
                         </Box>
@@ -392,12 +386,6 @@ const Player = (props: audioProp) => {
                                     valueLabelDisplay="auto"
                                     orientation="vertical"
                                     onChange={(_e, value) => setVolume(value as number)}
-                                    sx={{
-                                        "& .MuiSlider-thumb": {
-                                            width: 8,
-                                            height: 8
-                                        }
-                                    }}
                                 />
                             </Box>
                         </Box>
