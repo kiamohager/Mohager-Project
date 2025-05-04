@@ -197,53 +197,6 @@ const Player = (props: audioProp) => {
                             }}
                             src={props.albumImg ?? undefined}
                         />
-                        <Box
-                            display={"flex"}
-                            alignItems={"center"}
-                            flexDirection={"column"}
-                            marginTop={16}
-                        >
-                            <Icon sx={{ color: "neutral.light" }}>
-                                {volume === 0 ? (
-                                    <VolumeOffIcon />
-                                ) : volume <= 50 ? (
-                                    <VolumeDownIcon />
-                                ) : (
-                                    <VolumeUpIcon />
-                                )}
-                            </Icon>
-                            <Box
-                                height={90}
-                                display={"flex"}
-                                alignItems={"center"}
-                                flexDirection={"column"}
-                                paddingTop={1}
-                                paddingBottom={1}
-                            >
-                                <Slider
-                                    value={volume}
-                                    color="secondary"
-                                    min={0}
-                                    max={100}
-                                    step={1}
-                                    size={"small"}
-                                    orientation="vertical"
-                                    onChange={(_e, value) => setVolume(value as number)}
-                                    onChangeCommitted={(_e, value) => setVolume(value as number)}
-                                    sx={{
-                                        "& .MuiSlider-thumb": {
-                                            color: "neutral.light"
-                                        },
-                                        "& .MuiSlider-track": {
-                                            color: "neutral.light"
-                                        },
-                                        "& .MuiSlider-rail": {
-                                            color: "neutral.light"
-                                        }
-                                    }}
-                                />
-                            </Box>
-                        </Box>
                     </Box>
                 </motion.div>
             </Box>

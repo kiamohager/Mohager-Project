@@ -34,10 +34,6 @@ const App = () => {
             createTheme({
                 palette: {
                     mode: darkMode ? "dark" : "light",
-                    // primary: {
-                    //     main: "#fafafa",
-                    //     light: "#f5f5f5"
-                    // },
                     secondary: {
                         main: "#33eb91",
                         light: "#5befa7",
