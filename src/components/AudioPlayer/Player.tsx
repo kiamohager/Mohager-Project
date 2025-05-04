@@ -1,5 +1,5 @@
 // components/Player.tsx
-import { Box, Icon, IconButton, Slider, Typography, useTheme } from "@mui/material";
+import { Box, Icon, IconButton, Slider, Typography } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
@@ -29,7 +29,6 @@ const Player = (props: audioProp) => {
     const [volume, setVolume] = useState<number>(30);
     const [currentTime, setCurrentTime] = useState<number>(0);
     const [duration, setDuration] = useState<number>(0);
-    const theme = useTheme();
 
     useEffect(() => {
         const audio = props.audio;

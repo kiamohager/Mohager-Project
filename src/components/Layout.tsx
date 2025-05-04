@@ -1,9 +1,8 @@
-import { Box, Grid2 as Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { DesktopSocialButtonList } from "./Socials";
 import Run from "./Points";
 import Player from "./AudioPlayer/Player";
 import useAudioPlayer from "./hooks/useAudioPlayer";
-import { useEffect } from "react";
 
 type screenProps = { isSmallScreen: boolean; isMediumScreen: boolean };
 const Layout = (props: screenProps) => {
@@ -15,7 +14,6 @@ const Layout = (props: screenProps) => {
         skipPrevious,
         audioElement,
         analyser,
-        setIsPlaying,
         currentSong
     } = useAudioPlayer();
 

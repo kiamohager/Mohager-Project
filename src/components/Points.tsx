@@ -1,7 +1,7 @@
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import circleImg from "../assets/styles/circle.png";
-import { BufferAttribute, Color, PointsMaterial, TextureLoader } from "three";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { BufferAttribute, PointsMaterial, TextureLoader } from "three";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { FFT_SIZE } from "./hooks/useAudioPlayer";
 
 type AnalyserProp = { analyser: AnalyserNode | null; paused: boolean; isSmallScreen: boolean };
@@ -12,11 +12,10 @@ function Points(props: AnalyserProp) {
     const materialRef = useRef<PointsMaterial | null>(null);
 
     const initialT = 0;
-    const initialF = 0.002;
+    const f = 0.002;
     const initialA = 1.5;
 
     const [t, setT] = useState(initialT);
-    const [f, setF] = useState(initialF);
     const [a, setA] = useState(initialA);
 
     const graph = useCallback(

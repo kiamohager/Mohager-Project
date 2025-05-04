@@ -1,4 +1,3 @@
-// hooks/useAudioPlayer.ts
 import { useState, useEffect, useRef } from "react";
 import { playlist, songs } from "../AudioPlayer/Songs";
 

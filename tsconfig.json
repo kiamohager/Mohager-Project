@@ -16,14 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "ts-node": {
-        "transpileOnly": true,
-        "compilerOptions": {
-            "module": "NodeNext",
-            "moduleResolution": "NodeNext",
-            "sourceMap": true
-        }
-    },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

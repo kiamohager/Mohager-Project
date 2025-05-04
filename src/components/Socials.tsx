@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, SxProps, Theme, Typography } from "@mui/material";
+import { Box, Button, IconButton, SxProps, Theme } from "@mui/material";
 
 import DescriptionIcon from "@mui/icons-material/Description";
 import EmailIcon from "@mui/icons-material/Email";
@@ -74,13 +74,6 @@ const CustomIconButton = (props: any) => {
         >
             <Box sx={{ display: "flex", alignItems: "center", color: "white" }}>
                 <Icon sx={{ fontSize: props.isSmallScreen ? 17 : 25}}/>
-                {!props.social && (
-                    <Box pl={2}>
-                        {/* <Typography color="secondary" fontFamily={"Special Gothic Expanded One"} fontSize={props.isSmallScreen ? 10 : 15}>
-                            {props.text}
-                        </Typography> */}
-                    </Box>
-                )}
             </Box>
         </ButtonType>
     );

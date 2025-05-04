@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { createTheme, ThemeProvider, StyledEngineProvider, useTheme } from "@mui/material/styles";
+import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { grey } from "@mui/material/colors";
 
