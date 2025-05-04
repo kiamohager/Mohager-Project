@@ -193,7 +193,6 @@ const Player = (props: audioProp) => {
                                 objectFit: "cover",
                                 borderRadius: "50%",
                                 border: props.albumImg ? "1px solid white" : "none",
-                                marginTop: "160px"
                             }}
                             src={props.albumImg ?? undefined}
                         />
