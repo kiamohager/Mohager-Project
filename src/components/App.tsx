@@ -3,8 +3,29 @@ import { useMemo } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { createTheme, ThemeProvider, StyledEngineProvider, useTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import { grey } from "@mui/material/colors";
 
 import Layout from "./Layout";
+
+declare module "@mui/material/styles" {
+	interface Palette {
+        neutral: Palette["primary"];
+    }
+    interface PaletteOptions {
+        neutral: PaletteOptions["primary"];
+    }
+
+	interface PaletteColor {
+        medium?: string;
+		mediumDark?: string;
+    }
+    interface SimplePaletteColorOptions {
+        medium?: string;
+		mediumDark?: string;
+    }
+}
+
+  
 
 const App = () => {
     const darkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -13,8 +34,18 @@ const App = () => {
             createTheme({
                 palette: {
                     mode: darkMode ? "dark" : "light",
+                    // primary: {
+                    //     main: "#fafafa",
+                    //     light: "#f5f5f5"
+                    // },
                     secondary: {
-                        main: "#33eb91"
+                        main: "#33eb91",
+                        light: "#5befa7",
+                        dark: "#23a465"
+                    },
+                    neutral: {
+                        main: "#9e9e9e",
+                        light: grey[50]
                     }
                 }
             }),

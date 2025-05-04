@@ -1,5 +1,5 @@
 // components/Player.tsx
-import { Box, Icon, IconButton, Slider, Typography } from "@mui/material";
+import { Box, Icon, IconButton, Slider, Typography, useTheme } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
@@ -26,9 +26,10 @@ type audioProp = {
 };
 
 const Player = (props: audioProp) => {
-    const [volume, setVolume] = useState<number>(5);
+    const [volume, setVolume] = useState<number>(30);
     const [currentTime, setCurrentTime] = useState<number>(0);
     const [duration, setDuration] = useState<number>(0);
+    const theme = useTheme();
 
     useEffect(() => {
         const audio = props.audio;
@@ -86,7 +87,7 @@ const Player = (props: audioProp) => {
                                 {props.trackTitle}
                             </Typography>
                             <Typography
-                                color="secondary"
+                                color="neutral"
                                 variant={"h5"}
                                 fontSize={8}
                                 fontFamily={"Special Gothic Expanded One"}
@@ -95,16 +96,22 @@ const Player = (props: audioProp) => {
                                 {props.artist}
                             </Typography>
                             <Box display={"flex"} alignItems={"center"}>
-                                <IconButton color="secondary" onClick={props.skipPrevious}>
+                                <IconButton
+                                    sx={{ color: "neutral.light" }}
+                                    onClick={props.skipPrevious}
+                                >
                                     <SkipPreviousIcon />
                                 </IconButton>
                                 <IconButton
-                                    color="secondary"
+                                    sx={{ color: "neutral.light" }}
                                     onClick={props.isPlaying ? props.pauseAudio : props.playAudio}
                                 >
                                     {props.isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
                                 </IconButton>
-                                <IconButton color="secondary" onClick={props.skipNext}>
+                                <IconButton
+                                    sx={{ color: "neutral.light" }}
+                                    onClick={props.skipNext}
+                                >
                                     <SkipNextIcon />
                                 </IconButton>
                             </Box>
@@ -113,12 +120,12 @@ const Player = (props: audioProp) => {
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
+                        transition={{ delay: 0.1, duration: 0.8, ease: "easeOut" }}
                     >
                         <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
                             <Box display={"flex"} width={40}>
                                 <Typography
-                                    color="secondary"
+                                    color="white"
                                     fontFamily={"Special Gothic Expanded One"}
                                     fontSize={13}
                                 >
@@ -143,13 +150,20 @@ const Player = (props: audioProp) => {
                                     mr: 1,
                                     "& .MuiSlider-thumb": {
                                         width: 8,
-                                        height: 8
+                                        height: 8,
+                                        color: "neutral.light"
+                                    },
+                                    "& .MuiSlider-track": {
+                                        color: "secondary.main"
+                                    },
+                                    "& .MuiSlider-rail": {
+                                        color: "neutral.light"
                                     }
                                 }}
                             />
                             <Box display={"flex"} justifyContent={"flex-end"} width={40}>
                                 <Typography
-                                    color="secondary"
+                                    color="white"
                                     fontFamily={"Special Gothic Expanded One"}
                                     fontSize={13}
                                 >
@@ -162,7 +176,7 @@ const Player = (props: audioProp) => {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.2, duration: 1 }}
+                    transition={{ delay: 0.1, duration: 0.8 }}
                 >
                     <Box display={"flex"} width={80} justifyContent={"flex-end"}>
                         <motion.img
@@ -189,7 +203,7 @@ const Player = (props: audioProp) => {
                             flexDirection={"column"}
                             marginTop={16}
                         >
-                            <Icon color="secondary">
+                            <Icon sx={{ color: "neutral.light" }}>
                                 {volume === 0 ? (
                                     <VolumeOffIcon />
                                 ) : volume <= 50 ? (
@@ -213,10 +227,20 @@ const Player = (props: audioProp) => {
                                     max={100}
                                     step={1}
                                     size={"small"}
-                                    valueLabelDisplay="auto"
                                     orientation="vertical"
                                     onChange={(_e, value) => setVolume(value as number)}
                                     onChangeCommitted={(_e, value) => setVolume(value as number)}
+                                    sx={{
+                                        "& .MuiSlider-thumb": {
+                                            color: "neutral.light"
+                                        },
+                                        "& .MuiSlider-track": {
+                                            color: "neutral.light"
+                                        },
+                                        "& .MuiSlider-rail": {
+                                            color: "neutral.light"
+                                        }
+                                    }}
                                 />
                             </Box>
                         </Box>
@@ -244,7 +268,7 @@ const Player = (props: audioProp) => {
                         width={props.isMediumScreen ? 100 : 300}
                     >
                         <Typography
-                            color={"secondary"}
+                            color="secondary"
                             variant={"h5"}
                             fontSize={17}
                             fontFamily={"Special Gothic Expanded One"}
@@ -253,7 +277,7 @@ const Player = (props: audioProp) => {
                             {props.trackTitle}
                         </Typography>
                         <Typography
-                            color="secondary"
+                            color="neutral"
                             variant={"h5"}
                             fontSize={10}
                             fontFamily={"Special Gothic Expanded One"}
@@ -262,16 +286,19 @@ const Player = (props: audioProp) => {
                             {props.artist}
                         </Typography>
                         <Box display={"flex"} alignItems={"center"}>
-                            <IconButton color="secondary" onClick={props.skipPrevious}>
+                            <IconButton
+                                sx={{ color: "neutral.light" }}
+                                onClick={props.skipPrevious}
+                            >
                                 <SkipPreviousIcon />
                             </IconButton>
                             <IconButton
-                                color="secondary"
+                                sx={{ color: "neutral.light" }}
                                 onClick={props.isPlaying ? props.pauseAudio : props.playAudio}
                             >
                                 {props.isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
                             </IconButton>
-                            <IconButton color="secondary" onClick={props.skipNext}>
+                            <IconButton sx={{ color: "neutral.light" }} onClick={props.skipNext}>
                                 <SkipNextIcon />
                             </IconButton>
                         </Box>
@@ -280,12 +307,12 @@ const Player = (props: audioProp) => {
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
+                    transition={{ delay: 0.1, duration: 0.8, ease: "easeOut" }}
                 >
                     <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
                         <Box display={"flex"} width={40}>
                             <Typography
-                                color="secondary"
+                                color="white"
                                 fontFamily={"Special Gothic Expanded One"}
                                 fontSize={13}
                             >
@@ -294,7 +321,6 @@ const Player = (props: audioProp) => {
                         </Box>
                         <Slider
                             value={currentTime}
-                            color="secondary"
                             min={0}
                             max={duration}
                             size={"small"}
@@ -310,13 +336,20 @@ const Player = (props: audioProp) => {
                                 mr: 1,
                                 "& .MuiSlider-thumb": {
                                     width: 8,
-                                    height: 8
+                                    height: 8,
+                                    color: "neutral.light"
+                                },
+                                "& .MuiSlider-track": {
+                                    color: "secondary.main"
+                                },
+                                "& .MuiSlider-rail": {
+                                    color: "neutral.light"
                                 }
                             }}
                         />
                         <Box display={"flex"} justifyContent={"flex-end"} width={40}>
                             <Typography
-                                color="secondary"
+                                color="white"
                                 fontFamily={"Special Gothic Expanded One"}
                                 fontSize={13}
                             >
@@ -328,7 +361,7 @@ const Player = (props: audioProp) => {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.2, duration: 1 }}
+                    transition={{ delay: 0.1, duration: 0.8 }}
                 >
                     <Box
                         display={"flex"}
@@ -359,7 +392,7 @@ const Player = (props: audioProp) => {
                             flexDirection={"column"}
                             marginTop={14}
                         >
-                            <Icon color="secondary">
+                            <Icon sx={{ color: "neutral.light" }}>
                                 {volume === 0 ? (
                                     <VolumeOffIcon />
                                 ) : volume <= 50 ? (
@@ -378,14 +411,23 @@ const Player = (props: audioProp) => {
                             >
                                 <Slider
                                     value={volume}
-                                    color="secondary"
                                     min={0}
                                     max={100}
                                     step={1}
                                     size={"small"}
-                                    valueLabelDisplay="auto"
                                     orientation="vertical"
                                     onChange={(_e, value) => setVolume(value as number)}
+                                    sx={{
+                                        "& .MuiSlider-thumb": {
+                                            color: "neutral.light"
+                                        },
+                                        "& .MuiSlider-track": {
+                                            color: "neutral.light"
+                                        },
+                                        "& .MuiSlider-rail": {
+                                            color: "neutral.light"
+                                        }
+                                    }}
                                 />
                             </Box>
                         </Box>

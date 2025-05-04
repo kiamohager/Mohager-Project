@@ -22,12 +22,21 @@ const Layout = (props: screenProps) => {
     return (
         <>
             <Box display={"flex"} flexDirection={"column"} height={"100vh"} zIndex={55}>
-                <Grid container justifyContent={"space-between"}>
-                    <Typography p={2} fontFamily={"Special Gothic Expanded One"} color="secondary">
-                        Kia Mohager
-                    </Typography>
-                    <DesktopSocialButtonList />
-                </Grid>
+                <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"}>
+                    <Box width={props.isSmallScreen ? 180 : 260}>
+                        <Typography
+                            p={1}
+                            mt={props.isSmallScreen ? 0.3 : 1}
+                            ml={1}
+                            fontFamily={"Special Gothic Expanded One"}
+                            color="secondary.light"
+                            fontSize={!props.isSmallScreen ? 30 : 20}
+                        >
+                            Kia Mohager
+                        </Typography>
+                    </Box>
+                    <DesktopSocialButtonList isSmallScreen={props.isSmallScreen} />
+                </Box>
                 <Box flex={1} />
                 <Box m={2}>
                     <Player

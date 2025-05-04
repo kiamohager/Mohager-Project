@@ -6,16 +6,20 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import InstagramIcon from "@mui/icons-material/Instagram";
 
+type screenProps = { sx?: SxProps<Theme> | undefined, isSmallScreen: boolean };
+
 const socialList = [
     {
         name: "Resume",
         url: "https://bit.ly/4ivIe3S",
-        icon: DescriptionIcon
+        icon: DescriptionIcon,
+        social: true
     },
     {
         name: "Email",
         url: "mailto:kiamohager@gmail.com",
-        icon: EmailIcon
+        icon: EmailIcon,
+        social: true
     },
     {
         name: "LinkedIn",
@@ -37,17 +41,18 @@ const socialList = [
     }
 ];
 
-export const DesktopSocialButtonList = (props: { sx?: SxProps<Theme> | undefined }) => {
+export const DesktopSocialButtonList = (props: screenProps) => {
     return (
-        <Box p={2} sx={props.sx} display={"flex"} flexWrap={"wrap"} justifyContent={"center"}>
+        <Box p={1.5} sx={props.sx} display={"flex"} flexWrap={"wrap"} justifyContent={"center"}>
             {socialList.map((socialDetails, index) => {
                 return (
-                    <Box key={index} mr={1}>
+                    <Box key={index}>
                         <CustomIconButton
                             href={socialDetails.url}
                             icon={socialDetails.icon}
                             text={socialDetails.name}
                             social={socialDetails.social}
+                            isSmallScreen={props.isSmallScreen}
                         />
                     </Box>
                 );
@@ -56,24 +61,24 @@ export const DesktopSocialButtonList = (props: { sx?: SxProps<Theme> | undefined
     );
 };
 
-
 const CustomIconButton = (props: any) => {
     const Icon = props.icon;
-    const ButtonType = props.social ? IconButton : Button;
+    const ButtonType : React.ElementType = props.social ? IconButton : Button;
     return (
-        // @ts-ignore
         <ButtonType
             className={"social-button"}
             href={props.href}
             target={"_blank"}
             rel={"noopener"}
-            size={"large"}
+            size={props.isSmallScreen ? "small" : "large"}
         >
             <Box sx={{ display: "flex", alignItems: "center", color: "white" }}>
-                <Icon />
+                <Icon sx={{ fontSize: props.isSmallScreen ? 17 : 25}}/>
                 {!props.social && (
                     <Box pl={2}>
-                        <Typography color="secondary" fontFamily={"Special Gothic Expanded One"}>{props.text}</Typography>
+                        {/* <Typography color="secondary" fontFamily={"Special Gothic Expanded One"} fontSize={props.isSmallScreen ? 10 : 15}>
+                            {props.text}
+                        </Typography> */}
                     </Box>
                 )}
             </Box>
